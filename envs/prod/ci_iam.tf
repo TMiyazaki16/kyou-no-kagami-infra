@@ -39,6 +39,17 @@ resource "google_cloud_run_v2_service_iam_member" "ci_app_developer" {
   member   = "serviceAccount:${data.google_service_account.ci_app.email}"
 }
 
+# seed 投入ジョブ（Cloud Run Jobs）の作成・更新・実行。ジョブ名はアプリリポジトリの
+# ワークフロー変数 SEED_JOB_NAME の既定値と一致させる。サービスへの権限がジョブには
+# 及ばないため、ジョブ単位で別に付与する（初回パイプラインで run.jobs.create が
+# 拒否されたための追加。2026-11-23）。
+resource "google_cloud_run_v2_job_iam_member" "ci_app_seed_job_developer" {
+  name     = "kagami-seed-demo"
+  location = var.region
+  role     = "roles/run.developer"
+  member   = "serviceAccount:${data.google_service_account.ci_app.email}"
+}
+
 # Cloud Run のデプロイには「アプリを動かす実行サービスアカウントを使ってよい」権限が要る。
 # プロジェクトレベルで付けるとプロジェクト内の全サービスアカウントになりすませてしまうため、
 # 実行サービスアカウント 1 つに限定する。
