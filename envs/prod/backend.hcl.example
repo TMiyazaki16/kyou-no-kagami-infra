@@ -1,0 +1,5 @@
+# terraform init -backend-config=backend.hcl で使う値の雛形。
+# cp backend.hcl.example backend.hcl で作成する（backend.hcl は commit しない）。
+# bucket は envs/prod-bootstrap の output tfstate_bucket_name と一致させる。
+bucket = "kyou-no-kagami-tfstate"
+prefix = "kyou-no-kagami/prod"

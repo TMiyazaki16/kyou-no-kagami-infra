@@ -1,0 +1,16 @@
+# 既定値は variables.tf に入っているため、変更したい項目だけを上書きする。
+# cp terraform.tfvars.example terraform.tfvars で作成する（tfvars は commit しない）。
+# パスワード等の秘密情報はここに書かない（MySQL のパスワードは Terraform が生成して Secret Manager に入れる）。
+
+# project_id   = "kyou-no-kagami"
+# region       = "asia-northeast1"
+# site_domain  = "kyou-no-kagami.tmiyazaki-works.com"
+
+# 後片付けで destroy するときだけ false にして apply → destroy
+# protect_data = true
+
+# Cloud SQL を止めてインスタンス料金を止める（ストレージ料金は残る）
+# cloudsql_activation_policy = "NEVER"
+
+# Gemini を使う場合: Secret Manager に手動でキーを入れ、そのシークレット ID を指定する
+# gemini_api_key_secret_id = "kagami-gemini-api-key"
