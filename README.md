@@ -217,7 +217,7 @@ terraform destroy -var='protect_data=false'
 MCP のセットアップ（`.mcp.json`、PAT の環境変数 `GITHUB_PERSONAL_ACCESS_TOKEN`）と流れの詳細はアプリリポジトリの README「開発フロー」節、
 Claude Code 向けの運用ルールは `AGENTS.md`（`CLAUDE.md` はそのシンボリックリンク）の「開発フロー」節を参照してください。
 
-- Deroshi（PM）の条件提示 → Claude が Issue を起票（必須項目：背景 / スコープ / 受け入れ条件 / 対象外）→ Issue ごとのブランチで実装 → PR → Deroshi がレビューしてマージ
+- PMの条件提示 → Claude が Issue を起票（必須項目：背景 / スコープ / 受け入れ条件 / 対象外）→ Issue ごとのブランチで実装 → PR → PM がレビューしてマージ
 - ブランチ名：`<リポジトリ名（小文字）>-i<番号>-<タイトルを英訳したスラッグ>`（例：`kyou-no-kagami-infra-i3-add-seed-job-iam`）。main への直接 push は禁止
 - PR 本文に `Closes #<番号>` と検証結果（`terraform fmt -recursive -check`、両 env の `init -backend=false` ＋ `validate`、plan の確認）を書く
 - スキル（`.claude/skills/`）：`file-issue` / `start-issue` / `open-pr` / `verify-infra` / `code-review`

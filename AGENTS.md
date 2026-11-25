@@ -85,16 +85,16 @@ terraform validate
 
 ## 開発フロー
 
-2026-11-23 から Issue ドリブンで進める（アプリリポジトリ `TMiyazaki16/kyou-no-kagami` と同じ流れ）。Deroshi（PM）が条件を決め、Claude が Issue 起票 → ブランチで実装 → PR 作成、Deroshi がレビューしてマージする。**このリポジトリはマージしても自動では apply されない**。apply はオーナーが行う。
+2026-11-23 から Issue ドリブンで進める（アプリリポジトリ `TMiyazaki16/kyou-no-kagami` と同じ流れ）。PM が条件を決め、Claude が Issue 起票 → ブランチで実装 → PR 作成、PM がレビューしてマージする。**このリポジトリはマージしても自動では apply されない**。apply はオーナーが行う。
 
 ### 運用ルール
 
-- Issue は Deroshi の条件提示を受けて Claude が起票する。テンプレ必須項目：**背景 / スコープ / 受け入れ条件 / 対象外**
-- 大きな Issue（上の「人間確認が必要なとき」に当たるもの、3 ファイル以上または複数モジュールにまたがるもの）は、実装前に Deroshi が内容を確認する。小さいタスクのバッチは起票→実装を通してよい
+- Issue は PM の条件提示を受けて Claude が起票する。テンプレ必須項目：**背景 / スコープ / 受け入れ条件 / 対象外**
+- 大きな Issue（上の「人間確認が必要なとき」に当たるもの、3 ファイル以上または複数モジュールにまたがるもの）は、実装前に PM が内容を確認する。小さいタスクのバッチは起票→実装を通してよい
 - ブランチ命名：`<リポジトリ名（小文字）>-i<番号>-<タイトルを英訳したスラッグ>`（例：`kyou-no-kagami-infra-i3-add-seed-job-iam`）。main から切る。1 Issue = 1 ブランチ = 1 PR
 - **main への直接 push 禁止。必ず PR を作る**
-- PR 本文に `Closes #<番号>` とテスト・検証結果（fmt / validate / plan の確認）を書く。**マージは Deroshi**（レビュー通過後）。Claude はマージしない
-- commit・push・PR 作成は、Deroshi に依頼されたときに `open-pr` の手順で行う（上の「明示依頼なしでは実行しない」は変わらない）
+- PR 本文に `Closes #<番号>` とテスト・検証結果（fmt / validate / plan の確認）を書く。**マージは PM**（レビュー通過後）。Claude はマージしない
+- commit・push・PR 作成は、PM に依頼されたときに `open-pr` の手順で行う（上の「明示依頼なしでは実行しない」は変わらない）
 - GCP の手動操作はしない。アプリのデプロイは CI 経由
 
 ### Terraform 固有の注意
@@ -114,7 +114,7 @@ terraform validate
 | `start-issue` | Issue 番号 → 命名規則どおりのブランチを main から作成 |
 | `open-pr` | 検品 → commit → push → PR 作成（`Closes #<番号>`・検証結果つき）。マージはしない |
 | `verify-infra` | fmt -check ＋ 両 env の init -backend=false / validate ＋ オーナーが実行した plan 出力の確認 |
-| `code-review` | PR 番号 → 差分・Issue・CI を照合した構造化レビュー。マージ判断は Deroshi |
+| `code-review` | PR 番号 → 差分・Issue・CI を照合した構造化レビュー。マージ判断は PM |
 
 `file-issue` / `start-issue` / `open-pr` / `code-review` はアプリリポジトリと同じ内容（汎用）。リポジトリ固有の値は下の表から読む。
 
@@ -125,9 +125,9 @@ terraform validate
 | リポジトリ | `TMiyazaki16/kyou-no-kagami-infra` |
 | ブランチ接頭辞 | `kyou-no-kagami-infra` |
 | 既定ブランチ | `main` |
-| gh | `~/workspace/tools/gh/gh`（Deroshi の VM。PATH に `gh` があればそれでよい） |
+| gh | `~/workspace/tools/gh/gh`（PM の VM。PATH に `gh` があればそれでよい） |
 | 検証スキル | `verify-infra` |
-| terraform | `terraform`（`.terraform-version` の版。Deroshi の VM では `~/workspace/tools/terraform/terraform`） |
+| terraform | `terraform`（`.terraform-version` の版。PM の VM では `~/workspace/tools/terraform/terraform`） |
 | 対象 env | `prod` `prod-bootstrap` |
 | テスト | `terraform fmt -recursive -check`、両 env で `terraform init -backend=false` → `terraform validate` |
 | テストの期待値 | fmt 差分なし、両 env で `Success! The configuration is valid.` |
